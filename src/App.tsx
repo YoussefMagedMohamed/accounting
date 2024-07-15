@@ -1,10 +1,18 @@
-import { useState } from 'react'
-import './App.css'
+import "./App.css";
+// import Invoices from "./Screens/Invoices/Invoices";
+import ManualJournals from "./Screens/ManualJournals/ManualJournals";
+// import NewAccount from "./Screens/NewAccount/NewAccount";
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return <div className='text-red-900 text-9xl'>hi</div>
+  return (
+    <>
+      <div className="container mx-auto">
+        {/* <NewAccount /> */}
+        <ManualJournals />
+        {/* <Invoices /> */}
+      </div>
+    </>
+  );
 }
 
-export default App
+export default App;
