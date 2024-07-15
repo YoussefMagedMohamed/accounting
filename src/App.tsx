@@ -1,6 +1,7 @@
 import "./App.css";
 // import Invoices from "./Screens/Invoices/Invoices";
-import ManualJournals from "./Screens/ManualJournals/ManualJournals";
+// import ManualJournals from "./Screens/ManualJournals/ManualJournals";
+import NewCustomer from "./Screens/NewCustomer/NewCustomer";
 // import NewAccount from "./Screens/NewAccount/NewAccount";
 
 function App() {
@@ -8,8 +9,9 @@ function App() {
     <>
       <div className="container mx-auto">
         {/* <NewAccount /> */}
-        <ManualJournals />
+        {/* <ManualJournals /> */}
         {/* <Invoices /> */}
+        <NewCustomer />
       </div>
     </>
   );

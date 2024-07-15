@@ -113,16 +113,15 @@ const ManualJournals = () => {
     append({});
   }
 
-  // Function for adding new row 
+  // Function for adding new row
   let addNewRow = () => {
     append({});
   };
 
-  // Function for deleting row 
+  // Function for deleting row
   let removeRow = () => {
     // remove({index});
     console.log("HELLO");
-    
   };
 
   return (
@@ -324,7 +323,10 @@ const ManualJournals = () => {
                       />
                     </TableCell>
                     <TableCell>
-                      <i onClick={removeRow} className="fa-solid fa-xmark cursor-pointer"></i>
+                      <i
+                        onClick={removeRow}
+                        className="fa-solid fa-xmark cursor-pointer"
+                      ></i>
                     </TableCell>
                   </TableRow>
                 );
