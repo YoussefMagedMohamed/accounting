@@ -24,6 +24,8 @@ import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const NewAccount = () => {
   // Validation Schema
@@ -39,7 +41,7 @@ const NewAccount = () => {
       .max(50, {
         message: "Account Name must not be longer than 50 characters.",
       }),
-    accountCode: z.number().positive().optional(),
+    accountCode: z.coerce.number().positive().optional(),
     wishlist: z.boolean().default(false).optional(),
     description: z
       .string()
@@ -48,7 +50,8 @@ const NewAccount = () => {
       })
       .max(500, {
         message: "Description must not be longer than 500 characters.",
-      }).optional(),
+      })
+      .optional(),
   });
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -60,15 +63,32 @@ const NewAccount = () => {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    axios
+      .post("http://localhost:3000/chartofaccounts", form.getValues())
+      .then((a) => {
+        console.log({ a });
+
+        toast({
+          title: "You submitted the following values:",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">
+                {JSON.stringify(data, null, 2)}
+              </code>
+            </pre>
+          ),
+        });
+      });
   }
+
+  const [accountsType, setAccountsType] = useState<any>([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/accountsType").then((res) => {
+      setAccountsType(res.data);
+    });
+  }, []);
+  console.log(accountsType);
 
   return (
     <>
@@ -92,13 +112,15 @@ const NewAccount = () => {
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Other Assets" />
+                      <SelectValue placeholder="Select Account Type" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                    <SelectItem value="m@support.com">m@support.com</SelectItem>
+                    {accountsType.map((item, index: number) => {
+                      return (
+                        <SelectItem key={index} value={item.id}>{item.type}</SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
                 {/* <FormDescription>
@@ -189,7 +211,9 @@ const NewAccount = () => {
           <Button type="submit" className="me-5">
             Save
           </Button>
-          <Button type="button" className="me-5">Cancel</Button>
+          <Button type="button" className="me-5">
+            Cancel
+          </Button>
         </form>
       </Form>
     </>
