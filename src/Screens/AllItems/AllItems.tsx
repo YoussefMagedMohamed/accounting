@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import axios from 'axios'
+import { Link } from "react-router-dom";
 
 const AllItems = () => {
 
@@ -24,6 +25,7 @@ const AllItems = () => {
   return (
     <>
       <h1 className="text-2xl font-bold my-10 mb-8">All Items</h1>
+      <Link to={"/items"}><Button className="me-auto">New Item</Button></Link>
       <Table>
         <TableHeader>
           <TableRow>

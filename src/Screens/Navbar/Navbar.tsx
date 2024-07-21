@@ -68,7 +68,7 @@ let Navbar = () => {
                   {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
                   
                   <Link
-                    to={"allitems"}
+                    to={"/"}
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
                     All Items
@@ -85,24 +85,24 @@ let Navbar = () => {
                   >
                     Invoices
                   </Link>
-                  <Link
+                  {/* <Link
                     to={"items"}
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
                     Items
-                  </Link>
+                  </Link> */}
                   <Link
                     to={"manualJournals"}
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
                     Manual Journals
                   </Link>
-                  <Link
+                  {/* <Link
                     to={"newAccount"}
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
                     New Account
-                  </Link>
+                  </Link> */}
                   <Link
                     to={"newCustomer"}
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"

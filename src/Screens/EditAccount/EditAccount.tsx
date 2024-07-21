@@ -26,8 +26,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const NewAccount = () => {
+  let idParam = useParams();
+  console.log(idParam);
+
+  const [accountsType, setAccountsType] = useState<any>([]);
+  const [getAccount, setGetAccount] = useState<any>([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/accountsType").then((res) => {
+      setAccountsType(res.data);
+    });
+
+    axios
+      .get(`http://localhost:3000/chartofaccount/${idParam.id}`)
+      .then((res) => {
+        setGetAccount(res.data);
+        // form.setValue()
+        console.log(getAccount);
+      });
+  }, []);
+
   // Validation Schema
   const FormSchema = z.object({
     accountType: z.string({
@@ -58,41 +79,33 @@ const NewAccount = () => {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       wishlist: true,
-      accountName: "",
+      // accountName: {getAccount},
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    let newAccount = await axios
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    axios
       .post("http://localhost:3000/chartofaccounts", form.getValues())
       .then((a) => {
-        console.log(newAccount);
-        // console.log("Hello");
-      });
+        console.log({ a });
 
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+        toast({
+          title: "You submitted the following values:",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">
+                {JSON.stringify(data, null, 2)}
+              </code>
+            </pre>
+          ),
+        });
+      });
   }
 
-  const [accountsType, setAccountsType] = useState<any>([]);
-
-  useEffect(() => {
-    axios.get("http://localhost:3000/accountsType").then((res) => {
-      setAccountsType(res.data);
-    });
-  }, []);
-
-  console.log(accountsType);
   return (
     <>
       <h1 className="text-center text-2xl font-bold my-6 mb-8">
-        Create Account{" "}
+        Edit Account{" "}
       </h1>
       <Form {...form}>
         <form
@@ -117,7 +130,7 @@ const NewAccount = () => {
                   <SelectContent>
                     {accountsType.map((item, index: number) => {
                       return (
-                        <SelectItem key={index} value={item.type}>
+                        <SelectItem key={index} value={item.id}>
                           {item.name}
                         </SelectItem>
                       );

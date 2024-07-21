@@ -9,19 +9,21 @@ import ManualJournals from "./Screens/ManualJournals/ManualJournals";
 // import Navbar from "./Screens/Navbar/Navbar";
 import NewAccount from "./Screens/NewAccount/NewAccount";
 import NewCustomer from "./Screens/NewCustomer/NewCustomer";
+import EditAccount from "./Screens/EditAccount/EditAccount";
 
 let routers = createBrowserRouter([
   {
     path: "",
     element: <Layout />,
     children: [
-      { path: "allitems", element: <AllItems /> },
+      { index: true, element: <AllItems /> },
       { path: "chartOfAccounts", element: <ChartOfAccounts /> },
       { path: "invoices", element: <Invoices /> },
       { path: "items", element: <Items /> },
       { path: "manualJournals", element: <ManualJournals /> },
       { path: "newAccount", element: <NewAccount /> },
       { path: "newCustomer", element: <NewCustomer /> },
+      { path: "editAccount/:id", element: <EditAccount /> },
     ],
   },
 ]);
