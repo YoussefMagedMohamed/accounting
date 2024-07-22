@@ -28,9 +28,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const NewAccount = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
   // Validation Schema
   const FormSchema = z.object({
-    accountType: z.string({
+    accountType: z.number({
       required_error: "Please select an Assets to Display.",
     }),
     accountName: z
@@ -41,7 +48,7 @@ const NewAccount = () => {
       .max(50, {
         message: "Account Name must not be longer than 50 characters.",
       }),
-    accountCode: z.coerce.number().positive().optional(),
+    accountCode: z.string().optional(),
     wishlist: z.boolean().default(false).optional(),
     description: z
       .string()
@@ -59,6 +66,7 @@ const NewAccount = () => {
     defaultValues: {
       wishlist: true,
       accountName: "",
+      accountCode: "",
     },
   });
 
@@ -99,15 +107,34 @@ const NewAccount = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6 w-full"
         >
-          <FormField
+          <label htmlFor="accountType">Account Type*</label>
+          <select
+            name="accountType"
+            id="accountType"
+            {...register("accountType")}
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          >
+            {accountsType.map((item, index: number) => {
+              return (
+                <option key={index} className="m-5" value={item.type}>
+                  {item.name}
+                </option>
+              );
+            })}
+          </select>
+          {/* <FormField
             control={form.control}
             name="accountType"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Account Type*</FormLabel>
                 <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  onValueChange={(a)=>{ 
+                    debugger
+                    field.onChange(a)
+                  }
+                  }
+                  defaultValue={field.value?.toString()}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -117,7 +144,7 @@ const NewAccount = () => {
                   <SelectContent>
                     {accountsType.map((item, index: number) => {
                       return (
-                        <SelectItem key={index} value={item.type}>
+                        <SelectItem key={index} value={item.id}>
                           {item.name}
                         </SelectItem>
                       );
@@ -128,10 +155,10 @@ const NewAccount = () => {
                   You can manage email addresses in your{" "}
                   <Link href="/examples/forms">email settings</Link>.
                 </FormDescription> */}
-                <FormMessage />
+          {/* <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}{" "}
           <FormField
             control={form.control}
             name="accountName"
@@ -148,7 +175,6 @@ const NewAccount = () => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="accountCode"
@@ -156,7 +182,7 @@ const NewAccount = () => {
               <FormItem>
                 <FormLabel>Account Code</FormLabel>
                 <FormControl>
-                  <Input type="number" {...field} />
+                  <Input type="text" {...field} />
                 </FormControl>
                 {/* <FormDescription>
                 This is your public display name.
@@ -165,7 +191,6 @@ const NewAccount = () => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="description"
@@ -186,7 +211,6 @@ const NewAccount = () => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="wishlist"
@@ -208,7 +232,6 @@ const NewAccount = () => {
               </FormItem>
             )}
           />
-
           <Button type="submit" className="me-5">
             Save
           </Button>
